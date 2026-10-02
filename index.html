@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ElectroHogar | Análisis Marginal Multiproducto</title><meta name="description" content="Laboratorio interactivo de análisis marginal multiproducto y mix de ventas.">
+<style>
+:root{--bg:#f4f7fb;--paper:#fff;--ink:#14213d;--mut:#667085;--line:#dce3ee;--blue:#3158d6;--vio:#7146c7;--green:#11805e;--red:#b42318;--amber:#a15c00;--shadow:0 10px 28px rgba(25,36,65,.08)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 "Segoe UI",Arial,sans-serif}button,input{font:inherit}.wrap,section,footer{max-width:1200px;margin:auto}
+.hero{background:linear-gradient(120deg,#111d39,#25498e 58%,#6541a3);color:#fff;padding:42px 18px}.hero h1{font-size:clamp(2.2rem,5vw,3.8rem);line-height:1.03;margin:.4rem 0}.hero p{max-width:850px;opacity:.9}.ey{font-size:.78rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase;opacity:.75}.pills{display:flex;gap:7px;flex-wrap:wrap}.pill{border:1px solid #ffffff44;border-radius:99px;padding:6px 10px;font-size:.82rem}
+nav{position:sticky;top:0;z-index:10;background:#fffffff2;backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}nav .wrap{display:flex;gap:5px;overflow:auto;padding:9px 12px}nav a{color:var(--ink);text-decoration:none;font-weight:700;white-space:nowrap;padding:7px 9px}
+main{padding:25px 15px}section{margin-bottom:36px;scroll-margin-top:70px}.head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:13px}.head h2{margin:0;font-size:1.7rem}.head p{max-width:700px;color:var(--mut);margin:0}.tag{display:inline-block;background:#edf1ff;color:var(--blue);font-size:.72rem;font-weight:800;border-radius:99px;padding:4px 8px}
+.grid{display:grid;gap:12px}.g3{grid-template-columns:repeat(3,1fr)}.card,.prod,.q{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:16px;box-shadow:var(--shadow)}.card h3,.prod h3,.q h3{margin:0 0 7px}.card p,.prod p{color:var(--mut)}.formula{font-family:Consolas,monospace;background:#f5f7fb;border:1px solid var(--line);border-radius:9px;padding:9px}
+.products{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.prod .ico{font-size:1.7rem}.prod label,.control label{display:block;font-size:.78rem;font-weight:750;color:var(--mut);margin:8px 0 3px}.prod input,.control input{width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;background:#fff}.prod input:disabled,.control input:disabled{background:#eef1f5;color:#8a94a6;cursor:not-allowed}.locked{outline:2px solid #e6e9ef}.locknote{font-size:.7rem;color:var(--mut);margin-top:3px;display:none}.locked .locknote{display:block}
+.minirow{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:9px}.mini{background:#f5f7fb;border-radius:8px;padding:7px}.mini span,.kpi span{display:block;font-size:.69rem;color:var(--mut)}
+.mixbar{height:21px;display:flex;border-radius:99px;overflow:hidden;background:#e8edf5;margin:11px 0 5px}.ok{color:var(--green)}.no{color:var(--red)}
+.lab{display:grid;grid-template-columns:350px 1fr;gap:13px}.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:10px}.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px}.kpi b{font-size:1rem}.chart{background:#fff;border:1px solid var(--line);border-radius:15px;padding:11px;box-shadow:var(--shadow)}canvas{width:100%;height:380px;display:block}.legend{display:flex;gap:13px;flex-wrap:wrap;color:var(--mut);font-size:.76rem;margin-top:6px}.status{padding:11px;border:1px solid var(--line);background:#f5f7fb;border-radius:9px;margin-top:10px}.status.success{background:#edf9f4;border-color:#b8e5d4;color:#0b664a}.status.fail{background:#fff1f0;border-color:#f1c2bd;color:#8f2017}
+.quiz{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.ans{display:grid;gap:6px}.ans button,.btn,.levels button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px;cursor:pointer}.ans button{text-align:left}.ans .correct{background:#edf9f4;border-color:#78c4aa}.ans .wrong{background:#fff1f0;border-color:#dfa19a}.fb{font-weight:700;min-height:24px;margin-top:6px}
+.challenge{display:grid;grid-template-columns:310px 1fr;gap:12px}.levels{display:grid;gap:7px}.levels button{text-align:left;font-weight:700}.levels .active{background:#edf1ff;border-color:var(--blue);color:var(--blue)}.levels .done::after{content:" ✓";color:var(--green)}.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue);font-weight:700}.btn.next{display:none;background:var(--green);color:#fff;border-color:var(--green);font-weight:700}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.hint{display:none;background:#fff8e8;border:1px solid #efd49b;padding:9px;border-radius:8px;margin-top:9px}.modebanner{display:none;background:#edf1ff;border:1px solid #cdd8ff;border-radius:11px;padding:10px 12px;margin-bottom:10px;font-weight:700;color:#2949b7}.modebanner.show{display:block}
+.moneyhint{font-size:.72rem;color:var(--mut);font-weight:700}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px;border-bottom:1px solid var(--line)}footer{padding:0 15px 35px;color:var(--mut);font-size:.82rem}
+@media(max-width:900px){.products{grid-template-columns:1fr 1fr}.lab,.challenge{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}.g3,.quiz{grid-template-columns:1fr}.head{display:block}.head p{margin-top:5px}}@media(max-width:520px){.products{grid-template-columns:1fr}}
+.welcome{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;color:#fff;background:linear-gradient(135deg,#111827,#1f2f6b 58%,#513b89);transition:.35s}.welcome.hidden{opacity:0;visibility:hidden;pointer-events:none}.welcome-card{width:min(840px,100%);padding:clamp(28px,5vw,56px);border-radius:28px;background:#ffffff17;border:1px solid #ffffff2e;box-shadow:0 28px 80px #0004}.welcome-card h1{font-size:clamp(2.35rem,6vw,4.6rem);line-height:1.02;margin:.55rem 0 1rem}.welcome-meta{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}.welcome-meta span{padding:7px 11px;border:1px solid #ffffff3b;border-radius:999px;font-size:.83rem}.welcome-teacher{font-weight:750;margin-bottom:24px}.welcome-actions{display:flex;gap:9px;flex-wrap:wrap}.welcome-start,.welcome-link{border-radius:11px;padding:12px 17px;font-weight:800;text-decoration:none}.welcome-start{border:0;background:#fff;color:#24336f}.welcome-link{border:1px solid #ffffff59;color:#fff;background:transparent}.switcher{display:inline-flex;margin-top:18px;padding:8px 11px;border:1px solid #ffffff47;border-radius:9px;color:#fff;text-decoration:none;font-weight:700;font-size:.88rem}</style></head>
+<body><div class="welcome" id="welcome"><div class="welcome-card"><div class="ey">Contabilidad Gerencial · Análisis Marginal Multiproducto</div><h1>ElectroHogar<br>Laboratorio de Mix de Ventas</h1><p>Experimentá con el mix de cuatro líneas para analizar cómo cambia la contribución marginal ponderada, el punto de equilibrio, el resultado y el margen de seguridad.</p><div class="welcome-meta"><span>4 productos</span><span>Mix de ventas</span><span>PE multiproducto</span><span>5 desafíos</span></div><div class="welcome-teacher">Docente: C.P. María Vanesa Acosta</div><div class="welcome-actions"><button class="welcome-start" id="startApp">Comenzar →</button><a class="welcome-link" href="https://vaneacosta.github.io/analisis-marginal/">← Simulador de un producto</a></div></div></div>
+<header class="hero"><div class="wrap"><div class="ey">Contabilidad Gerencial · Análisis marginal multiproducto</div><h1>ElectroHogar<br>Laboratorio de Mix de Ventas</h1><p>Experimentá con cuatro líneas de electrodomésticos. Cambiá precios, costos y participación para observar cómo el mix modifica la contribución marginal ponderada, el punto de equilibrio y el resultado.</p><a class="switcher" href="https://vaneacosta.github.io/analisis-marginal/">← Volver al simulador de un producto</a><div class="pills" style="margin-top:12px"><span class="pill">Heladeras</span><span class="pill">Lavarropas</span><span class="pill">Microondas</span><span class="pill">Smart TV</span><span class="pill">CM ponderada</span><span class="pill">PE multiproducto</span></div></div></header>
+<nav><div class="wrap"><a href="#idea">1. Idea</a><a href="#productos">2. Productos</a><a href="#sim">3. Simulador</a><a href="#exp">4. Experimentos</a><a href="#retos">5. Desafíos</a></div></nav>
+<main>
+<section id="idea"><div class="head"><div><span class="tag">PUNTO DE PARTIDA</span><h2>1. ¿Qué cambia cuando hay varios productos?</h2></div><p>Importan el margen de cada producto y la participación de cada línea dentro de las ventas.</p></div><div class="grid g3"><div class="card"><h3>CM de cada producto</h3><div class="formula">CMu = Precio − CVu</div><p>Cada línea aporta un monto diferente.</p></div><div class="card"><h3>CM% ponderada</h3><div class="formula">Σ (CM% × mix de ventas)</div><p>El mix determina cuánto pesa cada margen.</p></div><div class="card"><h3>PE multiproducto</h3><div class="formula">PE $ = Costos fijos / CM% ponderada</div><p>Si cambia el mix, puede cambiar el PE.</p></div></div></section>
+
+<section id="productos"><div class="head"><div><span class="tag">DATOS EDITABLES</span><h2>2. Construí el mix de ElectroHogar</h2></div><p>El mix está expresado como participación sobre las ventas monetarias y debe sumar exactamente 100%.</p></div><div id="challengeBanner" class="modebanner"></div><div class="products" id="products"></div><div class="card" style="margin-top:11px"><b>Composición del mix</b><div class="mixbar" id="mixbar"></div><b id="mixstatus"></b></div></section>
+
+<section id="sim"><div class="head"><div><span class="tag">LABORATORIO</span><h2>3. Punto de equilibrio multiproducto</h2></div><p>Observá simultáneamente el margen ponderado, el punto de equilibrio, las ventas proyectadas y el resultado.</p></div><div class="lab"><div class="card control"><h3>Empresa</h3><label>Costos fijos mensuales ($)</label><input id="cf" type="text" inputmode="numeric"><div id="cfHint" class="moneyhint"></div><label>Ventas proyectadas ($)</label><input id="sales" type="text" inputmode="numeric"><div id="salesHint" class="moneyhint"></div><button class="btn" style="margin-top:10px" id="resetBtn">↺ Restaurar escenario</button><div id="reading" class="status"></div></div><div><div class="kpis"><div class="kpi"><span>CM% ponderada</span><b id="kcm"></b></div><div class="kpi"><span>PE en pesos</span><b id="kpe"></b></div><div class="kpi"><span>Ventas proyectadas</span><b id="ksales"></b></div><div class="kpi"><span>Resultado</span><b id="kres"></b></div><div class="kpi"><span>Margen seguridad</span><b id="kms"></b></div></div><div class="chart"><canvas id="chart"></canvas><div class="legend"><span style="color:#3158d6">● Ventas</span><span style="color:#b42318">● Costos totales</span><span style="color:#7146c7">┊ Punto de equilibrio</span><span style="color:#11805e">│ Ventas proyectadas</span></div></div></div></div><div class="card" style="margin-top:12px"><h3>Distribución del punto de equilibrio según el mix</h3><p>Conversión aproximada del PE monetario a ventas y unidades equivalentes por línea.</p><div id="detail"></div></div></section>
+
+<section id="exp"><div class="head"><div><span class="tag">PREDICCIÓN</span><h2>4. Predecí y comprobá</h2></div><p>Respondé primero. Después modificá el simulador para comprobar tu hipótesis.</p></div><div class="quiz" id="quiz"></div></section>
+
+<section id="retos"><div class="head"><div><span class="tag">MODO DESAFÍO</span><h2>5. Administrá ElectroHogar</h2></div><p>Seleccioná un nivel. La web prepara el escenario, bloquea las variables que no podés modificar y te lleva al simulador.</p></div><div class="challenge"><div class="card"><h3>Niveles</h3><div id="levels" class="levels"></div></div><div class="card"><span id="ltag" class="tag"></span><h3 id="ltitle"></h3><p id="ltext"></p><div id="lrule" class="formula"></div><div class="actions"><button id="goSim" class="btn primary">Ir al simulador ↑</button><button id="checkBtn" class="btn primary">Comprobar</button><button id="hintBtn" class="btn">Pista</button><button id="restartBtn" class="btn">Reiniciar</button><button id="nextBtn" class="btn next">Siguiente desafío →</button></div><div id="cfb" class="status">Seleccioná un nivel y comenzá.</div><div id="hint" class="hint"></div></div></div></section>
+</main><footer><b>ElectroHogar · Simulador didáctico multiproducto.</b> Modelo simplificado. Mix expresado como participación sobre ventas monetarias.</footer>
+
+<script>
+(function(){
+"use strict";const welcome=document.getElementById("welcome"),startApp=document.getElementById("startApp");if(startApp)startApp.addEventListener("click",()=>{welcome.classList.add("hidden");setTimeout(()=>welcome.remove(),400)});
+const $id=id=>document.getElementById(id);
+const base=[
+ {name:"Heladera",icon:"🧊",price:950000,cv:700000,mix:35},
+ {name:"Lavarropas",icon:"🫧",price:720000,cv:500000,mix:30},
+ {name:"Microondas",icon:"♨️",price:240000,cv:145000,mix:15},
+ {name:"Smart TV",icon:"📺",price:650000,cv:390000,mix:20}
+];
+let state={products:clone(base),fixed:18000000,sales:65000000,currentChallenge:null,attempts:0,completed:new Set(),locks:{price:false,cv:false,mix:false,fixed:false,sales:false}};
+function clone(v){return JSON.parse(JSON.stringify(v))}
+function money(n){return "$ "+Math.round(n).toLocaleString("es-AR")}
+function percent(n){return (n*100).toLocaleString("es-AR",{maximumFractionDigits:1})+"%"}
+function parseMoney(v){return Number(String(v).replace(/[^\d-]/g,""))||0}
+function formatMoneyInput(el,n){el.value=Math.round(n).toLocaleString("es-AR");let h=$id(el.id+"Hint");if(h)h.textContent=money(n)}
+function metrics(){
+ const sum=state.products.reduce((a,p)=>a+p.mix,0);
+ const weighted=state.products.reduce((a,p)=>a+(p.price>0?((p.price-p.cv)/p.price)*(p.mix/100):0),0);
+ const pe=weighted>0?state.fixed/weighted:Infinity;
+ const result=state.sales*weighted-state.fixed;
+ const ms=state.sales>0&&Number.isFinite(pe)?(state.sales-pe)/state.sales:NaN;
+ return {sum,weighted,pe,result,ms};
+}
+function renderProducts(){
+ const box=$id("products"); box.innerHTML="";
+ state.products.forEach((p,i)=>{
+  const d=document.createElement("div"); d.className="prod";
+  d.innerHTML=`<div class="ico">${p.icon}</div><h3>${p.name}</h3>
+  <label>Precio de venta ($)</label><input data-i="${i}" data-k="price" type="text" inputmode="numeric"><div class="moneyhint" id="ph${i}"></div>
+  <label>Costo variable unitario ($)</label><input data-i="${i}" data-k="cv" type="text" inputmode="numeric"><div class="moneyhint" id="ch${i}"></div>
+  <label>Participación en ventas (%)</label><input data-i="${i}" data-k="mix" type="number" min="0" max="100" step="1">
+  <div class="locknote">Variable bloqueada en este desafío.</div>
+  <div class="minirow"><div class="mini"><span>CMu</span><b id="cmu${i}"></b></div><div class="mini"><span>CM%</span><b id="cmp${i}"></b></div></div>`;
+  box.appendChild(d);
+ });
+ box.querySelectorAll("input").forEach(inp=>{
+  inp.addEventListener("input",onProductInput);
+  inp.addEventListener("blur",()=>{if(inp.dataset.k!=="mix"){let i=+inp.dataset.i;formatProductMoney(inp,state.products[i][inp.dataset.k])}});
+ });
+ syncInputs(); applyLocks();
+}
+function formatProductMoney(el,n){el.value=Math.round(n).toLocaleString("es-AR");let i=el.dataset.i,k=el.dataset.k;let h=$id((k==="price"?"ph":"ch")+i);if(h)h.textContent=money(n)}
+function onProductInput(e){
+ const el=e.target,i=+el.dataset.i,k=el.dataset.k;
+ state.products[i][k]=k==="mix"?(Number(el.value)||0):parseMoney(el.value);
+ calculate();
+}
+function syncInputs(){
+ document.querySelectorAll("#products input").forEach(el=>{
+  const p=state.products[+el.dataset.i],k=el.dataset.k;
+  if(k==="mix")el.value=p[k];else formatProductMoney(el,p[k]);
+ });
+ formatMoneyInput($id("cf"),state.fixed); formatMoneyInput($id("sales"),state.sales);
+}
+function applyLocks(){
+ document.querySelectorAll("#products input").forEach(el=>{
+  const locked=state.locks[el.dataset.k];
+  el.disabled=locked;
+  el.closest(".prod").classList.toggle("locked",locked && state.currentChallenge!==null);
+ });
+ $id("cf").disabled=state.locks.fixed;$id("sales").disabled=state.locks.sales;
+}
+function calculate(){
+ const m=metrics(), valid=Math.abs(m.sum-100)<0.001&&m.weighted>0;
+ state.products.forEach((p,i)=>{$id("cmu"+i).textContent=money(p.price-p.cv);$id("cmp"+i).textContent=percent(p.price?((p.price-p.cv)/p.price):0)});
+ const colors=["#3158d6","#7146c7","#11805e","#a15c00"];
+ $id("mixbar").innerHTML=state.products.map((p,i)=>`<div style="width:${Math.max(0,p.mix)}%;background:${colors[i]}"></div>`).join("");
+ $id("mixstatus").textContent=`Total del mix: ${m.sum.toLocaleString("es-AR",{maximumFractionDigits:1})}% ${Math.abs(m.sum-100)<.001?"✓":"— debe sumar 100%"}`;
+ $id("mixstatus").className=Math.abs(m.sum-100)<.001?"ok":"no";
+ $id("kcm").textContent=valid?percent(m.weighted):"—";$id("kpe").textContent=valid?money(m.pe):"—";$id("ksales").textContent=money(state.sales);$id("kres").textContent=valid?money(m.result):"—";$id("kms").textContent=valid&&Number.isFinite(m.ms)?percent(m.ms):"—";
+ const read=$id("reading");
+ if(!valid){read.className="status fail";read.innerHTML="<b>Revisá el mix.</b> Las participaciones deben sumar 100%."}
+ else if(state.sales<m.pe){read.className="status fail";read.innerHTML=`Las ventas proyectadas están <b>por debajo del PE</b>. Faltan aproximadamente ${money(m.pe-state.sales)}.`}
+ else{read.className="status success";read.innerHTML=`Las ventas proyectadas están <b>por encima del PE</b>. Margen de seguridad: ${percent(m.ms)}.`}
+ renderDetail(valid?m:null);draw(valid?m:null);
+}
+function renderDetail(m){
+ if(!m){$id("detail").textContent="Corregí el mix para calcular la distribución.";return}
+ const rows=state.products.map(p=>{const assigned=m.pe*p.mix/100,q=p.price>0?assigned/p.price:0;return `<tr><td>${p.icon} ${p.name}</td><td>${p.mix}%</td><td>${money(assigned)}</td><td>${q.toLocaleString("es-AR",{maximumFractionDigits:1})} u.</td></tr>`}).join("");
+ $id("detail").innerHTML=`<table><thead><tr><th>Producto</th><th>Mix</th><th>Ventas en PE</th><th>Unidades equivalentes</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+function draw(m){
+ const c=$id("chart"),r=c.getBoundingClientRect(),d=window.devicePixelRatio||1;c.width=Math.max(1,r.width*d);c.height=Math.max(1,r.height*d);const ctx=c.getContext("2d");ctx.setTransform(d,0,0,d,0,0);const W=r.width,H=r.height,p={l:65,r:18,t:24,b:44};ctx.clearRect(0,0,W,H);if(!m)return;
+ const maxX=Math.max(state.sales,m.pe,1)*1.35,varRate=1-m.weighted,maxY=Math.max(maxX,state.fixed+maxX*varRate)*1.08,X=v=>p.l+v/maxX*(W-p.l-p.r),Y=v=>H-p.b-v/maxY*(H-p.t-p.b);
+ ctx.font="11px Segoe UI";ctx.strokeStyle="#e5e9f0";ctx.fillStyle="#667085";ctx.lineWidth=1;
+ for(let i=0;i<=5;i++){const v=maxY*i/5,y=Y(v);ctx.beginPath();ctx.moveTo(p.l,y);ctx.lineTo(W-p.r,y);ctx.stroke();ctx.fillText(Math.round(v/1e6)+"M",8,y+4)}
+ const line=(fn,col)=>{ctx.beginPath();ctx.moveTo(X(0),Y(fn(0)));ctx.lineTo(X(maxX),Y(fn(maxX)));ctx.strokeStyle=col;ctx.lineWidth=3;ctx.stroke()};
+ line(v=>v,"#3158d6");line(v=>state.fixed+v*varRate,"#b42318");
+ ctx.setLineDash([5,5]);ctx.strokeStyle="#7146c7";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(X(m.pe),H-p.b);ctx.lineTo(X(m.pe),Y(m.pe));ctx.stroke();ctx.setLineDash([]);ctx.fillStyle="#7146c7";ctx.fillText("PE",X(m.pe)+5,Y(m.pe)-6);
+ ctx.strokeStyle="#11805e";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(X(state.sales),H-p.b);ctx.lineTo(X(state.sales),Y(state.sales));ctx.stroke();ctx.fillStyle="#11805e";ctx.fillText("Ventas proyectadas",Math.max(p.l,X(state.sales)-95),p.t+12);
+}
+function resetBase(){state.products=clone(base);state.fixed=18000000;state.sales=65000000;state.currentChallenge=null;state.locks={price:false,cv:false,mix:false,fixed:false,sales:false};$id("challengeBanner").classList.remove("show");renderProducts();calculate()}
+$id("cf").addEventListener("input",e=>{state.fixed=parseMoney(e.target.value);$id("cfHint").textContent=money(state.fixed);calculate()});
+$id("sales").addEventListener("input",e=>{state.sales=parseMoney(e.target.value);$id("salesHint").textContent=money(state.sales);calculate()});
+$id("cf").addEventListener("blur",()=>formatMoneyInput($id("cf"),state.fixed));$id("sales").addEventListener("blur",()=>formatMoneyInput($id("sales"),state.sales));$id("resetBtn").addEventListener("click",resetBase);window.addEventListener("resize",()=>calculate());
+
+const questions=[
+ ["Si aumenta el peso de un producto con CM% superior al promedio, el PE normalmente...",["Aumenta","Disminuye","No cambia"],1,"Mejora la CM% ponderada y se necesitan menos ventas para cubrir los CF."],
+ ["Si cambia el mix y los costos fijos permanecen iguales...",["El PE puede cambiar","El PE siempre queda igual","Solo cambia el precio"],0,"El mix modifica la contribución marginal ponderada."],
+ ["¿Por qué ponderamos los márgenes?",["Porque importa la participación de cada producto","Porque desaparecen los CF","Porque todos tienen igual precio"],0,"Los productos no participan necesariamente en la misma proporción."]
+];
+function renderQuiz(){
+ $id("quiz").innerHTML=questions.map((q,i)=>`<div class="q"><h3>${i+1}. ${q[0]}</h3><div class="ans">${q[1].map((a,j)=>`<button data-q="${i}" data-a="${j}">${a}</button>`).join("")}</div><div class="fb" id="fb${i}"></div></div>`).join("");
+ $id("quiz").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{const qi=+b.dataset.q,ai=+b.dataset.a;b.parentElement.querySelectorAll("button").forEach(x=>x.className="");b.className=ai===questions[qi][2]?"correct":"wrong";$id("fb"+qi).textContent=(ai===questions[qi][2]?"✓ ":"Revisá: ")+questions[qi][3]}));
+}
+const challenges=[
+ {title:"Mix válido",text:"El mix fue alterado. Reconstruí una combinación que sume exactamente 100%.",rule:"Podés modificar únicamente el mix. Condición: mix total = 100%.",hint:"Las cuatro participaciones deben representar la totalidad de las ventas.",setup(){state.products=clone(base);state.products[0].mix=40;state.products[3].mix=30;state.fixed=18000000;state.sales=65000000},locks:{price:true,cv:true,mix:false,fixed:true,sales:true},ok(){return Math.abs(metrics().sum-100)<.001}},
+ {title:"Bajá el punto de equilibrio",text:"Sin modificar precios, CVu ni costos fijos, llevá el PE por debajo de $55 millones cambiando solamente el mix.",rule:"Objetivo: PE < $55.000.000 · mix = 100%.",hint:"Compará los CM% de los cuatro productos. Más participación de los márgenes altos eleva la CM% ponderada.",setup(){state.products=clone(base);state.fixed=18000000;state.sales=65000000},locks:{price:true,cv:true,mix:false,fixed:true,sales:true},ok(){let m=metrics();return Math.abs(m.sum-100)<.001&&m.pe<55000000}},
+ {title:"Shock de costos",text:"El CVu de las heladeras aumentó a $790.000. Reorganizá el mix para que el PE quede debajo de $60 millones.",rule:"Solo podés cambiar el mix. Objetivo: PE < $60.000.000.",hint:"La heladera ahora aporta un margen porcentual menor. Revisá cuánto peso querés darle.",setup(){state.products=clone(base);state.products[0].cv=790000;state.fixed=18000000;state.sales=65000000},locks:{price:true,cv:true,mix:false,fixed:true,sales:true},ok(){let m=metrics();return Math.abs(m.sum-100)<.001&&m.pe<60000000}},
+ {title:"Meta de resultado",text:"Con ventas proyectadas de $65 millones y CF de $18 millones, conseguí un resultado de al menos $8 millones modificando solamente el mix.",rule:"Objetivo: resultado ≥ $8.000.000 · mix = 100%.",hint:"Con ventas y CF constantes, necesitás elevar la contribución marginal ponderada.",setup(){state.products=clone(base);state.fixed=18000000;state.sales=65000000},locks:{price:true,cv:true,mix:false,fixed:true,sales:true},ok(){let m=metrics();return Math.abs(m.sum-100)<.001&&m.result>=8000000}},
+ {title:"Decisión gerencial",text:"Diseñá un mix que deje el PE debajo de $52 millones, manteniendo al menos 20% de heladeras y 20% de lavarropas.",rule:"PE < $52M · Heladeras ≥ 20% · Lavarropas ≥ 20% · mix = 100%.",hint:"Hay restricciones comerciales. Buscá una combinación que mejore el margen ponderado sin eliminar líneas relevantes.",setup(){state.products=clone(base);state.fixed=18000000;state.sales=65000000},locks:{price:true,cv:true,mix:false,fixed:true,sales:true},ok(){let m=metrics();return Math.abs(m.sum-100)<.001&&m.pe<52000000&&state.products[0].mix>=20&&state.products[1].mix>=20}}
+];
+function renderLevels(){
+ const box=$id("levels");box.innerHTML="";
+ challenges.forEach((c,i)=>{const b=document.createElement("button");b.textContent=`Nivel ${i+1} · ${c.title}`;if(i===state.currentChallenge)b.classList.add("active");if(state.completed.has(i))b.classList.add("done");b.addEventListener("click",()=>loadChallenge(i,true));box.appendChild(b)});
+}
+function loadChallenge(i,scroll){
+ state.currentChallenge=i;state.attempts=0;const c=challenges[i];c.setup();state.locks={...c.locks};renderProducts();calculate();applyLocks();
+ $id("ltag").textContent="NIVEL "+(i+1);$id("ltitle").textContent=c.title;$id("ltext").textContent=c.text;$id("lrule").textContent=c.rule;$id("cfb").className="status";$id("cfb").textContent="Escenario preparado. Andá al simulador y ajustá las variables habilitadas.";$id("hint").style.display="none";$id("hint").textContent=c.hint;$id("nextBtn").style.display="none";
+ const banner=$id("challengeBanner");banner.textContent=`Modo desafío activo · Nivel ${i+1}: ${c.title}. Solo están habilitadas las variables permitidas.`;banner.classList.add("show");renderLevels();if(scroll)$id("productos").scrollIntoView({behavior:"smooth"});
+}
+function checkChallenge(){
+ if(state.currentChallenge===null)return;state.attempts++;const c=challenges[state.currentChallenge];
+ if(c.ok()){state.completed.add(state.currentChallenge);$id("cfb").className="status success";$id("cfb").innerHTML="<b>✓ Objetivo logrado.</b> Explicá qué cambiaste y cómo afectó la contribución marginal ponderada.";if(state.currentChallenge<challenges.length-1)$id("nextBtn").style.display="inline-block";renderLevels()}
+ else{$id("cfb").className="status fail";$id("cfb").innerHTML="<b>Todavía no.</b> Revisá el mix y su efecto sobre la CM% ponderada.";if(state.attempts>=2)showHint()}
+}
+function showHint(){$id("hint").style.display="block"}
+$id("goSim").addEventListener("click",()=>{if(state.currentChallenge===null)loadChallenge(0,false);$id("productos").scrollIntoView({behavior:"smooth"})});
+$id("checkBtn").addEventListener("click",checkChallenge);$id("hintBtn").addEventListener("click",showHint);$id("restartBtn").addEventListener("click",()=>{if(state.currentChallenge!==null)loadChallenge(state.currentChallenge,true)});$id("nextBtn").addEventListener("click",()=>{if(state.currentChallenge<challenges.length-1)loadChallenge(state.currentChallenge+1,true)});
+renderProducts();renderQuiz();syncInputs();calculate();renderLevels();loadChallenge(0,false);
+})();
+</script></body></html>
